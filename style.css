@@ -1,14 +1,52 @@
+/* Palette et polices */
+:root {
+    --couleur-principale: #003B7A;
+    --couleur-accent: #FFD100;
+    --couleur-foncee: #001F3F;
+    --couleur-texte: #FFFFFF;
+
+    --police-titres: Bebas-neue-pro, sans-serif;
+    --police-texte: Arial, sans-serif;
+}
+
+/* Style général */
 body {
-    background-color: #003B7A;
-    color: #FFFFFF;
+    margin: 0;
+    background-color: var(--couleur-principale);
+    color: var(--couleur-texte);
+    font-family: var(--police-texte);
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
+/* En-tête */
 header {
-    background-color: #FFD100;
-    color: #003B7A;
+    padding: 1.5rem;
+    background-color: var(--couleur-accent);
+    color: var(--couleur-principale);
 }
 
+h1, h2 {
+    font-family: var(--police-titres);
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+/* Contenu principal */
+main {
+    padding: 1.5rem;
+}
+
+/* Pied de page */
 footer {
-    background-color: #001F3F;
-    color: #FFFFFF;
+    padding: 1rem 1.5rem;
+    background-color: var(--couleur-foncee);
+    color: var(--couleur-texte);
+    font-size: 0.875rem;
 }
