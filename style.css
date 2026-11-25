@@ -1,52 +1,321 @@
-/* Palette et polices */
+/* Palette et polices en variables (séances 6-7) */
 :root {
-    --couleur-principale: #003B7A;
-    --couleur-accent: #FFD100;
-    --couleur-foncee: #001F3F;
-    --couleur-texte: #FFFFFF;
+    --couleur-principale: #27272A;  /* gris anthracite : fond */
+    --couleur-secondaire: #3F3F46;  /* gris moyen : en-tête, cartes */
+    --couleur-accent: #FBBF24;      /* ambre : liens, badges */
+    --couleur-foncee: #09090B;      /* presque noir : pied de page */
+    --couleur-texte: #FFFFFF;       /* blanc : texte */
+    --couleur-menu: #15803D;        /* vert foncé : page en cours dans le menu (remplace ce code pour changer la couleur) */
 
-    --police-titres: Bebas-neue-pro, sans-serif;
+    --police-titres: "Bebas Neue", sans-serif;
     --police-texte: Arial, sans-serif;
 }
 
-/* Style général */
+/* Box model (séance 8) */
+* {
+    box-sizing: border-box;
+}
+
+/* Typographie (séance 7) */
 body {
     margin: 0;
     background-color: var(--couleur-principale);
     color: var(--couleur-texte);
     font-family: var(--police-texte);
     font-size: 1rem;
-    line-height: 1.5;
-}
+    line-height: 1.6;
 
-/* En-tête */
-header {
-    padding: 1.5rem;
-    background-color: var(--couleur-accent);
-    color: var(--couleur-principale);
+    /* Pied de page toujours en bas : la page devient une colonne Flexbox
+       d'au moins la hauteur de l'écran (voir aussi main, plus bas) */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 h1, h2 {
     font-family: var(--police-titres);
+    font-weight: 400;
 }
 
-h1 {
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.75rem; }
+
+/* Logo : lien vers l'accueil, image + texte alignés en Flexbox (séance 9) */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--couleur-texte);
+    font-family: var(--police-titres);
+    font-size: 1.375rem; /* plus petit sur mobile pour tenir sur une ligne (1.75rem sur grand écran) */
+    text-decoration: none;
+}
+
+/* Image du logo : efface le faux fond (damier) incrusté dans l'image et rend l'icône blanche */
+.logo img {
+    filter: brightness(1.25) invert(1); /* éclaircit le damier en blanc, puis inverse : fond noir, icône blanche */
+    mix-blend-mode: screen;             /* le noir se fond dans la couleur de l'en-tête et disparaît */
+}
+
+/* Images (séance 8) */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Liens : :hover + transition (séance 10) */
+a {
+    color: var(--couleur-accent);
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--couleur-texte);
+}
+
+/* Contenu centré à largeur limitée (séance 10) */
+.conteneur {
+    width: 100%; /* garde toute la largeur, même à l'intérieur du body en Flexbox */
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* En-tête collé en haut : sticky + z-index (séance 10) */
+.entete {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--couleur-secondaire);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); /* légère ombre sous l'en-tête */
+}
+
+/* Barre de navigation en Flexbox (séance 9) */
+.entete-contenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.menu ul {
+    display: flex;
+    flex-wrap: wrap; /* passe à la ligne si l'écran est vraiment trop étroit */
+    justify-content: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Liens du menu en pastilles aux coins arrondis (plus compacts sur mobile) */
+.menu a {
+    display: block;
+    padding: 0.5rem;
+    border-radius: 8px;
+    color: var(--couleur-texte);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+/* Survol, navigation au clavier et clic : fond légèrement éclairci */
+.menu a:hover,
+.menu a:focus-visible,
+.menu a:active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Page en cours (séance 10) : pastille de couleur */
+.menu a[aria-current="page"] {
+    background-color: var(--couleur-menu);
+}
+
+/* Bannière : image de fond + voile (séance 12), dans la largeur du contenu avec des coins arrondis */
+.banniere {
+    margin-top: 1.5rem;
+    padding: 3rem 1.25rem;
+    border-radius: 12px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("img/banniere.webp");
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+
+.banniere h1 {
+    margin: 0;
     font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-h2 {
-    font-size: 1.5rem;
+/* Sous-titre de la bannière */
+.banniere p {
+    margin: 0.75rem 0 0;
+    font-size: 1.125rem;
 }
 
-/* Contenu principal */
+/* Cartes en Grid (séances 8 et 11) */
+.grille {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+/* Carte : coins arrondis et ombre */
+.carte {
+    position: relative;
+    overflow: hidden; /* la bande de couleur suit les coins arrondis */
+    border-radius: 12px;
+    background-color: var(--couleur-secondaire);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Haut de la carte : bande de couleur avec le nom de la série */
+.carte-haut {
+    position: relative;
+    display: flex;
+    align-items: flex-end; /* le titre se pose en bas de la bande */
+    min-height: 9rem;
+    padding: 3rem 1.5rem 1.25rem;
+    overflow: hidden; /* coupe le cercle décoratif */
+}
+
+/* Cercle décoratif en bas à droite de la bande */
+.carte-haut::before {
+    content: "";
+    position: absolute;
+    right: -2rem;
+    bottom: -2.5rem;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.carte-haut h2 {
+    position: relative; /* passe devant le cercle */
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Bas de la carte : les tomes possédés */
+.carte-bas {
+    padding: 1rem 1.5rem 1.25rem;
+}
+
+.carte-bas p {
+    margin: 0;
+}
+
+/* Couleurs pour le haut des cartes : ajoute une de ces classes à .carte-haut */
+.fond-turquoise { background-color: #0F766E; }
+.fond-bleu      { background-color: #1D4ED8; }
+.fond-violet    { background-color: #7E22CE; }
+.fond-rouge     { background-color: #B91C1C; }
+.fond-orange    { background-color: #C2410C; }
+.fond-vert      { background-color: #15803D; }
+
+/* Badge posé sur la carte : absolute (séance 10) */
+.badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1; /* passe devant la bande de couleur */
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background-color: var(--couleur-accent);
+    color: var(--couleur-principale);
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+/* Tableau des demandes */
+.demandes {
+    width: 100%;
+    border-collapse: separate; /* nécessaire pour arrondir les coins du tableau */
+    border-spacing: 0;
+    border-radius: 12px;
+    background-color: var(--couleur-secondaire);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.demandes th,
+.demandes td {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* En-tête du tableau : petites majuscules grisées */
+.demandes th {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Trait de séparation au-dessus de chaque ligne */
+.demandes td {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Couverture du tome manquant */
+.demandes img {
+    display: block;
+    width: 80px;
+    height: 120px;
+    object-fit: cover; /* remplit le cadre sans déformer l'image */
+    border-radius: 6px;
+    background-color: var(--couleur-principale); /* cadre visible tant que l'image n'est pas ajoutée */
+}
+
+/* Contenu principal : prend toute la place libre et pousse le pied de page en bas */
 main {
-    padding: 1.5rem;
+    flex: 1;
 }
 
 /* Pied de page */
-footer {
-    padding: 1rem 1.5rem;
+.pied {
+    margin-top: 2rem; /* espace minimum entre le contenu et le pied de page */
+    padding: 1rem 0;
     background-color: var(--couleur-foncee);
-    color: var(--couleur-texte);
     font-size: 0.875rem;
+}
+
+/* Mobile-first : grands écrans (séance 11) */
+@media (min-width: 768px) {
+    .logo {
+        font-size: 1.75rem;
+    }
+
+    .entete-contenu {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu a {
+        padding: 0.5rem 0.625rem;
+        font-size: 1rem;
+    }
+
+    .banniere {
+        padding: 4rem 1.5rem;
+    }
+
+    .banniere h1 {
+        font-size: 2.5rem;
+    }
+
+    .grille {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .demandes th,
+    .demandes td {
+        padding: 1rem 1.5rem;
+    }
 }
